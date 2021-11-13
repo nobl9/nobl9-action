@@ -1,0 +1,27 @@
+name: 'Nobl9 sloctl configuration'
+description: 'Configures sloctl in the Docker container'
+inputs:
+  client_id: 
+    description: 'Client ID'
+    required: true
+  client_secret: 
+    description: 'Client Secret'
+    required: true
+  access_token: 
+    description: 'Access Token'
+    required: true
+  project: 
+    description: 'Project'
+    required: true
+  sloctl_yml: 
+    description: 'The sloctl yml configuration file to be applied'
+    required: true
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
+  args:
+    - ${{ inputs.client_id }}
+    - ${{ inputs.client_secret }}
+    - ${{ inputs.access_token }}
+    - ${{ inputs.project }}
+    - ${{ inputs.sloctl_yml }}
