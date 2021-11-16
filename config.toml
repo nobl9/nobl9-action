@@ -1,0 +1,8 @@
+defaultContext = "default"
+
+[Contexts]
+  [Contexts.default]
+    clientId = {{CLIENT_ID}}
+    clientSecret = {{CLIENT_SECRET}}
+    accessToken = {{ACCESS_TOKEN}}
+    project = {{PROJECT}}
