@@ -19,4 +19,4 @@ echo "    project = \"${PROJECT}\"" >> ~/.config/nobl9/config.toml
 
 cat $SLOCTL_YML
 
-/sloctl apply -f "$SLOCTL_YML"
+# /sloctl apply -f "$SLOCTL_YML"
