@@ -15,15 +15,6 @@ RUN unzip sloctl.zip && mv sloctl /usr/local/bin
 # Copy over our entrypoint file
 COPY entrypoint.sh /entrypoint.sh
 
-# Don't run as root!
-ARG USER=default
-ENV HOME /home/$USER
-
-RUN adduser -D $USER
-
-USER $USER
-WORKDIR $HOME
-
 # Make the directory for our config
 RUN mkdir -p $HOME/.config/nobl9
 # Copy over the config
