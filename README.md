@@ -14,9 +14,9 @@ This action supports GitHub actions secrets in all the input parameters. More de
 
 Example:
 ```yaml
-- uses: catacraciun/nobl9-action@v0.2.0
+- uses: nobl9/nobl9-action@v0.2.0
   with:
-    # This references to a custom `NOBL9_CLIENT_ID` secret defined in GitHub project settings 
+    # This references to a custom `NOBL9_CLIENT_ID` secret defined in GitHub project settings
     client_id: ${{ secrets.NOBL9_CLIENT_ID }}
 ```
 
@@ -24,7 +24,7 @@ Input parameters:
 
 <!-- start usage -->
 ```yaml
-- uses: catacraciun/nobl9-action@v0.2.0
+- uses: nobl9/nobl9-action@v0.2.0
   with:
     # The Client ID of your nobl9 account
     client_id: ''
