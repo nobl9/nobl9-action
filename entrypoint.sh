@@ -6,17 +6,9 @@ ACCESS_TOKEN=$3
 PROJECT=$4
 SLOCTL_YML=$5
 
-mkdir -p ~/.config/nobl9
-touch ~/.config/nobl9/config.toml
+sed -i "s/{{CLIENT_ID}}/${CLIENT_ID}/g" ~/.config/nobl9/config.toml
+sed -i "s/{{CLIENT_SECRET}}/${CLIENT_SECRET}/g" ~/.config/nobl9/config.toml
+sed -i "s/{{ACCESS_TOKEN}}/${ACCESS_TOKEN}/g" ~/.config/nobl9/config.toml
+sed -i "s/{{PROJECT}}/${PROJECT}/g" ~/.config/nobl9/config.toml
 
-echo 'defaultContext = "default"' >> ~/.config/nobl9/config.toml
-echo '[Contexts]' >> ~/.config/nobl9/config.toml
-echo '  [Contexts.default]' >> ~/.config/nobl9/config.toml
-echo "    clientId = \"${CLIENT_ID}\"" >> ~/.config/nobl9/config.toml
-echo "    clientSecret = \"${CLIENT_SECRET}\"" >> ~/.config/nobl9/config.toml
-echo "    accessToken = \"${ACCESS_TOKEN}\"" >> ~/.config/nobl9/config.toml
-echo "    project = \"${PROJECT}\"" >> ~/.config/nobl9/config.toml
-
-ls
-
-# /sloctl apply -f "$SLOCTL_YML"
+/sloctl apply -f "$SLOCTL_YML"

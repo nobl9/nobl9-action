@@ -1,11 +1,32 @@
-FROM ubuntu:20.10
+FROM alpine:latest
 
-ADD "https://github.com/nobl9/sloctl/releases/download/0.0.55/sloctl-linux-0.0.55.zip" /
-RUN apt-get update
-RUN apt-get -y install unzip ca-certificates
-RUN unzip /sloctl-linux-0.0.55.zip
+# Add the dependencies
+RUN apk add bash curl wget unzip libc6-compat libstdc++
 
+# Get the latest release of sloctl
+RUN curl -s https://api.github.com/repos/nobl9/sloctl/releases/latest | \
+  grep "browser_download_url.*linux*" | \
+  cut -d : -f 2,3 | \
+  tr -d \" | \
+  wget -O sloctl.zip -qi -
+# unzip and place the binary in the PATH
+RUN unzip sloctl.zip && mv sloctl /usr/local/bin
+
+# Copy over our entrypoint file
 COPY entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+
+# Don't run as root!
+ARG USER=default
+ENV HOME /home/$USER
+
+RUN adduser -D $USER
+
+USER $USER
+WORKDIR $HOME
+
+# Make the directory for our config
+RUN mkdir -p $HOME/.config/nobl9
+# Copy over the config
+COPY config.toml $HOME/.config/nobl9/config.toml
 
 ENTRYPOINT ["/entrypoint.sh"]
