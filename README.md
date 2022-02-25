@@ -1,6 +1,6 @@
 # nobl9-action
 
-This action is applying a nobl9 configuration file (specified at `sloctl_yml` input parameter) to a project using `sloctl` (https://nobl9.github.io/techdocs_Sloctl_User_Guide) tool.
+This action is applying a nobl9 configuration file (specified at `sloctl_yml` input parameter) to a project using `sloctl` (https://docs.nobl9.com/sloctl-user-guide/) tool.
 
 # Requirements
 
