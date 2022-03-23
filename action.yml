@@ -1,5 +1,8 @@
 name: "Nobl9 sloctl action"
 description: "Applies Nobl9 yaml configuration files using the sloctl CLI tool"
+branding:
+  icon: 'target'
+  color: 'blue'
 inputs:
   client_id:
     description: "Client ID"
