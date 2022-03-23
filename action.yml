@@ -1,5 +1,5 @@
-name: "Nobl9 sloctl configuration"
-description: "Configures sloctl in the Docker container"
+name: "Nobl9 sloctl action"
+description: "Applies Nobl9 yaml configuration files using the sloctl CLI tool"
 inputs:
   client_id:
     description: "Client ID"
