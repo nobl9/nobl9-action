@@ -7,10 +7,10 @@ defaultContext = "default"
 
 [Contexts]
   [Contexts.default]
-    clientId = ${INPUT_CLIENT_ID}
-    clientSecret = ${INPUT_CLIENT_SECRET}
-    accessToken = ${INPUT_ACCESS_TOKEN}
-    project = ${INPUT_PROJECT}
+    clientId = "${INPUT_CLIENT_ID}"
+    clientSecret = "${INPUT_CLIENT_SECRET}"
+    accessToken = "${INPUT_ACCESS_TOKEN}"
+    project = "${INPUT_PROJECT}"
 EOF
 
 cat ~/.config/nobl9/config.toml
