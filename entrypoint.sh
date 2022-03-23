@@ -11,4 +11,4 @@ sed -i "s/{{CLIENT_SECRET}}/${CLIENT_SECRET}/g" ~/.config/nobl9/config.toml
 sed -i "s/{{ACCESS_TOKEN}}/${ACCESS_TOKEN}/g" ~/.config/nobl9/config.toml
 sed -i "s/{{PROJECT}}/${PROJECT}/g" ~/.config/nobl9/config.toml
 
-/sloctl apply -f "$SLOCTL_YML"
+sloctl apply -f "$SLOCTL_YML"
