@@ -1,44 +1,44 @@
 # nobl9-action
 
-This action is applying a nobl9 configuration file (specified at `sloctl_yml` input parameter) to a project using `sloctl` (https://docs.nobl9.com/sloctl-user-guide/) tool.
+This action applies a Nobl9 configuration file (specified at `sloctl_yml` input parameter) to a project using `sloctl` (https://docs.nobl9.com/sloctl-user-guide/) tool.
 
-# Requirements
+## Requirements
 
-- Before running this action, the code must be checked out already (see https://github.com/actions/checkout).
 - A valid nobl9 account must be activated (check https://nobl9.com for more information)
 
+## Inputs
 
-# Usage
+### `client_id`
+The Client ID of your nobl9 account
 
-This action supports GitHub actions secrets in all the input parameters. More details: https://docs.github.com/en/actions/reference/encrypted-secrets.
+### `client_secret`
+The Client Secret of your nobl9 account
 
-Example:
+### `access_token`
+Access token used to authenticate the sloctl tool
+
+### `project`
+The project name on which the sloctl configuration will be applied to
+
+### `sloctl_yml`
+The path to the sloctl yaml configuration file, relative to the root directory of the repository
+
+## Example Usage
+
 ```yaml
-- uses: nobl9/nobl9-action@v0.2.0
-  with:
-    # This references to a custom `NOBL9_CLIENT_ID` secret defined in GitHub project settings
-    client_id: ${{ secrets.NOBL9_CLIENT_ID }}
+name: Nobl9 GitHub Actions Demo
+on: [push]
+jobs:
+  nobl9:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - uses: nobl9/nobl9-action@v0.2.0
+        with:
+          client_id: ${{ secrets.CLIENT_ID }}
+          client_secret: ${{ secrets.CLIENT_SECRET }}
+          access_token: ${{ secrets.ACCESS_TOKEN }}
+          project: "myproject"
+          sloctl_yml: "slos.yaml"
 ```
-
-Input parameters:
-
-<!-- start usage -->
-```yaml
-- uses: nobl9/nobl9-action@v0.2.0
-  with:
-    # The Client ID of your nobl9 account
-    client_id: ''
-
-    # The Client Secret of your nobl9 account
-    client_secret: ''
-
-    # Access token used to authenticate the sloctl tool
-    access_token: ''
-
-    # The project name on which the sloctl configuration will be applied to
-    project: ''
-
-    # The path to the sloctl yaml configuration file, relative to the root directory of the repository
-    sloctl_yml: ''
-```
-<!-- end usage -->
