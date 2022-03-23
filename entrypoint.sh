@@ -6,6 +6,7 @@ ACCESS_TOKEN=$3
 PROJECT=$4
 SLOCTL_YML=$5
 
+mkdir -p ~/.config/nobl9
 cp /config.toml ~/.config/nobl9/config.toml
 
 sed -i "s/{{CLIENT_ID}}/${CLIENT_ID}/g" ~/.config/nobl9/config.toml
