@@ -1,5 +1,8 @@
 FROM alpine:latest
 
+# Set our home directory
+ENV HOME /github/home
+
 # Add the dependencies
 RUN apk add bash curl wget unzip libc6-compat libstdc++
 
