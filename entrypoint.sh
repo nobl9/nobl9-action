@@ -13,6 +13,4 @@ defaultContext = "default"
     project = "${INPUT_PROJECT}"
 EOF
 
-cat ~/.config/nobl9/config.toml
-
 sloctl apply -f "${INPUT_SLOCTL_YML}"
