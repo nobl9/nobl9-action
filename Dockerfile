@@ -16,7 +16,4 @@ RUN unzip sloctl.zip && mv sloctl /usr/local/bin
 # Copy over our entrypoint file
 COPY entrypoint.sh /entrypoint.sh
 
-# Copy over the config
-COPY config.toml /config.toml
-
 ENTRYPOINT ["/entrypoint.sh"]
