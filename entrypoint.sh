@@ -1,11 +1,5 @@
 #!/bin/sh
 
-CLIENT_ID=$1
-CLIENT_SECRET=$2
-ACCESS_TOKEN=$3
-PROJECT=$4
-SLOCTL_YML=$5
-
 mkdir -p ~/.config/nobl9
 
 cat << EOF > ~/.config/nobl9/config.toml
@@ -13,12 +7,12 @@ defaultContext = "default"
 
 [Contexts]
   [Contexts.default]
-    clientId = ${CLIENT_ID}
-    clientSecret = ${CLIENT_SECRET}
-    accessToken = ${ACCESS_TOKEN}
-    project = ${PROJECT}
+    clientId = ${INPUT_CLIENT_ID}
+    clientSecret = ${INPUT_CLIENT_SECRET}
+    accessToken = ${INPUT_ACCESS_TOKEN}
+    project = ${INPUT_PROJECT}
 EOF
 
 cat ~/.config/nobl9/config.toml
 
-sloctl apply -f "$SLOCTL_YML"
+sloctl apply -f "${INPUT_SLOCTL_YML}"
