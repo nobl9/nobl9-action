@@ -1,27 +1,27 @@
 # nobl9-action
 
-This action applies a Nobl9 configuration file (specified at `sloctl_yml` input parameter) to a project using `sloctl` (https://docs.nobl9.com/sloctl-user-guide/) tool.
+This action applies a Nobl9 configuration file (specified via the sloctl_yml input parameter) to a project using the `sloctl` (https://docs.nobl9.com/sloctl-user-guide/) tool.
 
 ## Requirements
 
-- A valid nobl9 account must be activated (check https://nobl9.com for more information)
+- A valid Nobl9 account (see https://nobl9.com for more information)
 
 ## Inputs
 
 ### `client_id`
-The Client ID of your nobl9 account
+The Client ID of your Nobl9 account
 
 ### `client_secret`
-The Client Secret of your nobl9 account
+The Client Secret of your Nobl9 account
 
 ### `access_token`
-Access token used to authenticate the sloctl tool
+The access token used to authenticate to the sloctl tool
 
 ### `project`
-The project name on which the sloctl configuration will be applied to
+The name of the project the configuration will be applied to
 
 ### `sloctl_yml`
-The path to the sloctl yaml configuration file, relative to the root directory of the repository
+The path to the sloctl YAML configuration file, relative to the root directory of the repository
 
 ## Example Usage
 
