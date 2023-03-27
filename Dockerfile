@@ -1,10 +1,10 @@
 FROM alpine:latest
 
 # Add the dependencies
-RUN apk add bash curl wget unzip libc6-compat libstdc++
+RUN apk add bash wget unzip libc6-compat libstdc++ libssl3=3.0.8-r1 libcrypto3=3.0.8-r1
 
 # Get the latest release of sloctl
-RUN curl -s https://api.github.com/repos/nobl9/sloctl/releases/latest | \
+RUN wget -qO- https://api.github.com/repos/nobl9/sloctl/releases/latest | \
   grep "browser_download_url.*linux*" | \
   cut -d : -f 2,3 | \
   tr -d \" | \

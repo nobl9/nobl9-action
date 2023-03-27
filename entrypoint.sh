@@ -9,8 +9,17 @@ defaultContext = "default"
   [Contexts.default]
     clientId = "${INPUT_CLIENT_ID}"
     clientSecret = "${INPUT_CLIENT_SECRET}"
-    accessToken = "${INPUT_ACCESS_TOKEN}"
-    project = "${INPUT_PROJECT}"
 EOF
 
-sloctl apply -f "${INPUT_SLOCTL_YML}"
+flags=(
+  -f "${INPUT_SLOCTL_YML}"
+)
+if [[ $INPUT_AUTO_CONFIRM == "true" ]]; then
+  flags+=(-y)
+fi
+
+if [[ $INPUT_DRY_RUN == "true" ]]; then
+  flags+=(--dry-run)
+fi
+
+sloctl apply "${flags[@]}"
