@@ -61,7 +61,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - uses: nobl9/nobl9-action@v0.2.1
+      - uses: nobl9/nobl9-action@v0.2.2
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
