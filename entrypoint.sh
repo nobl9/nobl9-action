@@ -13,10 +13,8 @@ EOF
 
 flags=(
   -f "${INPUT_SLOCTL_YML}"
+  -y # default to auto confirm
 )
-if [[ $INPUT_AUTO_CONFIRM == "true" ]]; then
-  flags+=(-y)
-fi
 
 if [[ $INPUT_DRY_RUN == "true" ]]; then
   flags+=(--dry-run)

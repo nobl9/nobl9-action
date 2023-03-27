@@ -13,7 +13,6 @@ This action applies a Nobl9 configuration file (specified via the sloctl_yml inp
 | `client_id` | The Client ID of your Nobl9 account | **Yes** | N/A |
 | `client_secret` | The Client Secret of your Nobl9 account | **Yes** | N/A |
 | `sloctl_yml` | The path or [glob pattern](https://pkg.go.dev/path/filepath#Match) to the configuration in YAML format, relative to the root directory of the repository | **Yes** | N/A |
-| `auto_confirm` | Auto-confirm applying multiple files | No | `false` |
 | `dry_run` | The path or glob pattern to the configuration in YAML format, relative to the root directory of the repository | No | `false` |
 
 ## Example Usage
@@ -35,7 +34,7 @@ jobs:
           sloctl_yml: "slos.yaml"
 ```
 
-### Apply multiple files with auto-confirm
+### Apply multiple files
 ```yaml
 name: Nobl9 GitHub Actions Demo
 on: [push]
@@ -49,8 +48,7 @@ jobs:
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
-          sloctl_yml: "**.yaml"
-          auto_confirm: "true"
+          sloctl_yml: "**"
 ```
 
 ### Dry run

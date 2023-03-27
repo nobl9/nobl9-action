@@ -13,10 +13,6 @@ inputs:
   sloctl_yml:
     description: "The path or glob pattern to the configuration in YAML format"
     required: true
-  auto_confirm:
-    description: "Auto-confirm applying multiple files"
-    required: false
-    default: "false"
   dry_run:
     description: "Submits server-side request without persisting the configured resources"
     required: false
@@ -28,5 +24,4 @@ runs:
     - ${{ inputs.client_id }}
     - ${{ inputs.client_secret }}
     - ${{ inputs.sloctl_yml }}
-    - ${{ inputs.auto_confirm }}
     - ${{ inputs.dry_run }}
