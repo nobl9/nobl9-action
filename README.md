@@ -13,7 +13,7 @@ This action applies a Nobl9 configuration file (specified via the sloctl_yml inp
 | `client_id` | The Client ID of your Nobl9 account | **Yes** | N/A |
 | `client_secret` | The Client Secret of your Nobl9 account | **Yes** | N/A |
 | `sloctl_yml` | The path or [glob pattern](https://pkg.go.dev/path/filepath#Match) to the configuration in YAML format, relative to the root directory of the repository | **Yes** | N/A |
-| `dry_run` | The path or glob pattern to the configuration in YAML format, relative to the root directory of the repository | No | `false` |
+| `dry_run` | Submits server-side request without persisting the configured resources | No | `false` |
 
 ## Example Usage
 
@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - uses: nobl9/nobl9-action@v0.2.1
+      - uses: nobl9/nobl9-action@v0.2.2
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}

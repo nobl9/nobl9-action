@@ -13,7 +13,7 @@ EOF
 
 flags=(
   -f "${INPUT_SLOCTL_YML}"
-  -y # default to auto confirm
+  -y # Required to auto confirm, for more details refer to: https://docs.nobl9.com/sloctl-user-guide?_highlight=prompt&_highlight=threshold#apply
 )
 
 if [[ $INPUT_DRY_RUN == "true" ]]; then
