@@ -4,11 +4,7 @@ FROM alpine:latest
 RUN apk add bash wget unzip libc6-compat libstdc++ libssl3=3.0.8-r1 libcrypto3=3.0.8-r1
 
 # Get the latest release of sloctl
-RUN wget -qO- https://api.github.com/repos/nobl9/sloctl/releases/latest | \
-  grep "browser_download_url.*linux*" | \
-  cut -d : -f 2,3 | \
-  tr -d \" | \
-  wget -O sloctl -qi -
+RUN wget -O sloctl -q https://github.com/nobl9/sloctl/releases/download/v0.0.86/sloctl-linux-0.0.86
 
 # place the binary in the PATH
 RUN chmod +x sloctl

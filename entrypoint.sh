@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 mkdir -p ~/.config/nobl9
 
@@ -12,8 +12,8 @@ defaultContext = "default"
 EOF
 
 flags=(
-  -f "${INPUT_SLOCTL_YML}"
   -y # Required to auto confirm, for more details refer to: https://docs.nobl9.com/sloctl-user-guide?_highlight=prompt&_highlight=threshold#apply
+  -f "${INPUT_SLOCTL_YML}"
 )
 
 if [[ $INPUT_DRY_RUN == "true" ]]; then
