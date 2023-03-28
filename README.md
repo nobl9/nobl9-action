@@ -8,23 +8,16 @@ This action applies a Nobl9 configuration file (specified via the sloctl_yml inp
 
 ## Inputs
 
-### `client_id`
-The Client ID of your Nobl9 account
-
-### `client_secret`
-The Client Secret of your Nobl9 account
-
-### `access_token`
-The access token used to authenticate to the sloctl tool
-
-### `project`
-The name of the project the configuration will be applied to
-
-### `sloctl_yml`
-The path to the sloctl YAML configuration file, relative to the root directory of the repository
+| Parameter | Description | Required | Default |
+| --- | --- | --- | --- |
+| `client_id` | The Client ID of your Nobl9 account | **Yes** | N/A |
+| `client_secret` | The Client Secret of your Nobl9 account | **Yes** | N/A |
+| `sloctl_yml` | The path or [glob pattern](https://pkg.go.dev/path/filepath#Match) to the configuration in YAML format, relative to the root directory of the repository | **Yes** | N/A |
+| `dry_run` | Submits server-side request without persisting the configured resources | No | `false` |
 
 ## Example Usage
 
+### Apply single file
 ```yaml
 name: Nobl9 GitHub Actions Demo
 on: [push]
@@ -34,11 +27,44 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - uses: nobl9/nobl9-action@v0.2.1
+      - uses: nobl9/nobl9-action@v0.2.2
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
-          access_token: ${{ secrets.ACCESS_TOKEN }}
-          project: "myproject"
           sloctl_yml: "slos.yaml"
+```
+
+### Apply multiple files
+```yaml
+name: Nobl9 GitHub Actions Demo
+on: [push]
+jobs:
+  nobl9:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - uses: nobl9/nobl9-action@v0.2.2
+        with:
+          client_id: ${{ secrets.CLIENT_ID }}
+          client_secret: ${{ secrets.CLIENT_SECRET }}
+          sloctl_yml: "**"
+```
+
+### Dry run
+```yaml
+name: Nobl9 GitHub Actions Demo
+on: [push]
+jobs:
+  nobl9:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v2
+      - uses: nobl9/nobl9-action@v0.2.2
+        with:
+          client_id: ${{ secrets.CLIENT_ID }}
+          client_secret: ${{ secrets.CLIENT_SECRET }}
+          sloctl_yml: "validate-slos.yaml"
+          dry_run: "true"
 ```

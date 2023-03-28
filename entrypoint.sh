@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 mkdir -p ~/.config/nobl9
 
@@ -9,8 +9,15 @@ defaultContext = "default"
   [Contexts.default]
     clientId = "${INPUT_CLIENT_ID}"
     clientSecret = "${INPUT_CLIENT_SECRET}"
-    accessToken = "${INPUT_ACCESS_TOKEN}"
-    project = "${INPUT_PROJECT}"
 EOF
 
-sloctl apply -f "${INPUT_SLOCTL_YML}"
+flags=(
+  -y # Required to auto confirm, for more details refer to: https://docs.nobl9.com/sloctl-user-guide?_highlight=prompt&_highlight=threshold#apply
+  -f "${INPUT_SLOCTL_YML}"
+)
+
+if [[ $INPUT_DRY_RUN == "true" ]]; then
+  flags+=(--dry-run)
+fi
+
+sloctl apply "${flags[@]}"

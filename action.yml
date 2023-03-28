@@ -10,21 +10,18 @@ inputs:
   client_secret:
     description: "Client Secret"
     required: true
-  access_token:
-    description: "Access Token"
-    required: true
-  project:
-    description: "Project"
-    required: true
   sloctl_yml:
-    description: "The sloctl yml configuration file to be applied"
+    description: "The path or glob pattern to the configuration in YAML format"
     required: true
+  dry_run:
+    description: "Submits server-side request without persisting the configured resources"
+    required: false
+    default: "false"
 runs:
   using: "docker"
   image: "Dockerfile"
   args:
     - ${{ inputs.client_id }}
     - ${{ inputs.client_secret }}
-    - ${{ inputs.access_token }}
-    - ${{ inputs.project }}
     - ${{ inputs.sloctl_yml }}
+    - ${{ inputs.dry_run }}
