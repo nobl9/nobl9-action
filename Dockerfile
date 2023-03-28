@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.17.2
 
 # Add the dependencies
 RUN apk add bash wget unzip libc6-compat libstdc++ libssl3=3.0.8-r1 libcrypto3=3.0.8-r1
