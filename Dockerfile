@@ -1,7 +1,7 @@
 FROM alpine:3.17.2
 
 # Add the dependencies
-RUN apk add bash wget unzip libc6-compat libstdc++ libssl3=3.0.8-r1 libcrypto3=3.0.8-r1
+RUN apk add bash wget unzip libc6-compat libstdc++ libssl3 libcrypto3
 
 # Get the latest release of sloctl
 RUN wget -O sloctl -q https://github.com/nobl9/sloctl/releases/download/v0.0.86/sloctl-linux-0.0.86
