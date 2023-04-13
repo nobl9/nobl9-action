@@ -11,10 +11,16 @@ defaultContext = "default"
     clientSecret = "${INPUT_CLIENT_SECRET}"
 EOF
 
-flags=(
-  -y # Required to auto confirm, for more details refer to: https://docs.nobl9.com/sloctl-user-guide?_highlight=prompt&_highlight=threshold#apply
-  -f "${INPUT_SLOCTL_YML}"
-)
+# Required to auto confirm, for more details refer to:
+# https://docs.nobl9.com/sloctl-user-guide?_highlight=prompt&_highlight=threshold#apply
+flags=(-y)
+
+# INPUT_SLOCTL_YML should be a comma separated values string to avoid issues
+# with file paths containing spaces.
+IFS=","
+for filepath in $INPUT_SLOCTL_YML; do
+  flags+=(-f "$filepath")
+done
 
 if [[ $INPUT_DRY_RUN == "true" ]]; then
   flags+=(--dry-run)
