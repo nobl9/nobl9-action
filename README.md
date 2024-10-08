@@ -27,7 +27,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - uses: nobl9/nobl9-action@v0.2.2
+      - uses: nobl9/nobl9-action@v0.2.9
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
@@ -44,7 +44,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - uses: nobl9/nobl9-action@v0.2.2
+      - uses: nobl9/nobl9-action@v0.2.9
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
@@ -61,7 +61,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - uses: nobl9/nobl9-action@v0.2.2
+      - uses: nobl9/nobl9-action@v0.2.9
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
@@ -78,7 +78,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v2
-      - uses: nobl9/nobl9-action@v0.2.2
+      - uses: nobl9/nobl9-action@v0.2.9
         with:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
