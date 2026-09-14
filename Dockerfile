@@ -1,16 +1,10 @@
-FROM alpine:3.17.2
+FROM docker.io/nobl9/sloctl:0.26.0 AS sloctl
 
-# Add the dependencies
-RUN apk add bash wget unzip libc6-compat libstdc++ libssl3 libcrypto3
+FROM docker.io/library/alpine:3.24.1
 
-# Get the latest release of sloctl
-RUN wget -O sloctl -q https://github.com/nobl9/sloctl/releases/download/v0.9.1/sloctl-linux-0.9.1
+RUN apk add --no-cache bash ca-certificates
 
-# place the binary in the PATH
-RUN chmod +x sloctl
-RUN mv sloctl /usr/local/bin
-
-# Copy over our entrypoint file
-COPY entrypoint.sh /entrypoint.sh
+COPY --from=sloctl /usr/bin/sloctl /usr/local/bin/sloctl
+COPY --chmod=755 entrypoint.sh /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]

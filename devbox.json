@@ -1,0 +1,11 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/main/.schema/devbox.schema.json",
+  "packages": [
+    "bash@5.3p15",
+    "gnumake@4.4.1",
+    "actionlint@1.7.12",
+    "shellcheck@0.11.0",
+    "shfmt@3.14.0",
+    "hadolint@2.14.0"
+  ]
+}
