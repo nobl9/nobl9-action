@@ -30,7 +30,8 @@ CI runs `make check` on Linux AMD64 and ARM64 runners without Nobl9 credentials.
 ## Live end-to-end test
 
 The live test creates a uniquely named project in a test organization.
-It runs the action entrypoint to apply the project, confirms that it exists, runs the entrypoint to delete it, and confirms its removal.
+It runs the action entrypoint to apply the project, confirms that it exists,
+runs the entrypoint to delete it, and confirms its removal.
 Teardown attempts cleanup if an assertion fails and reports cleanup errors.
 
 Export `SLOCTL_CLIENT_ID` and `SLOCTL_CLIENT_SECRET` for a test organization with permission to create and delete projects.

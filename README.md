@@ -5,23 +5,24 @@ The default operation is `apply`.
 
 ## Requirements
 
-- A valid Nobl9 account (see https://nobl9.com for more information)
+Nobl9 [API keys](https://docs.nobl9.com/access-management/api-keys).
 
 ## Inputs
 
-| Parameter | Description | Required | Default |
-| --- | --- | --- | --- |
-| `client_id` | The Client ID of your Nobl9 account | **Yes** | N/A |
-| `client_secret` | The Client Secret of your Nobl9 account | **Yes** | N/A |
-| `oktaOrgURL` | Okta organization URL for your Nobl9 account | No | sloctl default |
-| `oktaAuthServer` | Okta authorization server ID for your Nobl9 account | No | sloctl default |
-| `sloctl_yml` | The path or [glob pattern](https://pkg.go.dev/path/filepath#Match) to the configuration in YAML format, relative to the root directory of the repository. In order to supply multiple sources, separate them with comma (example below) | **Yes** | N/A |
-| `operation` | The operation to run: `apply` or `delete`. Other values are rejected. | No | `apply` |
-| `dry_run` | Submits the selected operation to the server without changing resources | No | `false` |
+| Parameter        | Description                                                                                                                                                                                                                             | Required | Default        |
+|------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|----------|----------------|
+| `client_id`      | The Client ID of your Nobl9 account                                                                                                                                                                                                     | **Yes**  | N/A            |
+| `client_secret`  | The Client Secret of your Nobl9 account                                                                                                                                                                                                 | **Yes**  | N/A            |
+| `oktaOrgURL`     | Okta organization URL for your Nobl9 account                                                                                                                                                                                            | No       | sloctl default |
+| `oktaAuthServer` | Okta authorization server ID for your Nobl9 account                                                                                                                                                                                     | No       | sloctl default |
+| `sloctl_yml`     | The path or [glob pattern](https://pkg.go.dev/path/filepath#Match) to the configuration in YAML format, relative to the root directory of the repository. In order to supply multiple sources, separate them with comma (example below) | **Yes**  | N/A            |
+| `operation`      | The operation to run: `apply` or `delete`. Other values are rejected.                                                                                                                                                                   | No       | `apply`        |
+| `dry_run`        | Submits the selected operation to the server without changing resources                                                                                                                                                                 | No       | `false`        |
 
 ## Example Usage
 
 ### Apply single file
+
 ```yaml
 name: Nobl9 GitHub Actions Demo
 on: [push]
@@ -39,6 +40,7 @@ jobs:
 ```
 
 ### Recursively apply multiple files using glob pattern
+
 ```yaml
 name: Nobl9 GitHub Actions Demo
 on: [push]
@@ -56,6 +58,7 @@ jobs:
 ```
 
 ### Apply from multiple sources
+
 ```yaml
 name: Nobl9 GitHub Actions Demo
 on: [push]
@@ -73,6 +76,7 @@ jobs:
 ```
 
 ### Dry run
+
 ```yaml
 name: Nobl9 GitHub Actions Demo
 on: [push]
