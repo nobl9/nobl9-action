@@ -43,3 +43,25 @@ devbox run -- make test
 ```
 
 The test passes credentials from the environment to the container. Missing or invalid credentials cause `sloctl` to fail the test.
+
+## CI end-to-end check
+
+The `End-to-end test` job runs the same `devbox run -- make test` command
+on Linux AMD64.
+It runs for pull requests from this repository, pushes to `main`,
+merge groups, and manual workflow runs.
+Fork pull requests and Dependabot runs skip this job because GitHub
+does not provide Actions secrets to them.
+
+Configure these GitHub Actions secrets for a test organization
+with permission and quota to create and delete projects:
+
+| Secret | Required |
+| --- | --- |
+| `SLOCTL_CLIENT_ID` | Yes |
+| `SLOCTL_CLIENT_SECRET` | Yes |
+| `SLOCTL_OKTA_ORG_URL` | Only for custom authentication |
+| `SLOCTL_OKTA_AUTH_SERVER` | Only for custom authentication |
+
+Missing credentials fail the check through `sloctl`.
+Newer pushes do not cancel running checks, so the live test can finish cleanup.
