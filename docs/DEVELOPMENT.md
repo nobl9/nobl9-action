@@ -53,8 +53,10 @@ merge groups, and manual workflow runs.
 Fork pull requests and Dependabot runs skip this job because GitHub
 does not provide Actions secrets to them.
 
-Configure these GitHub Actions secrets for a test organization
-with permission and quota to create and delete projects:
+The job uses the `e2e` GitHub environment.
+Configure it under the repository's **Settings → Environments**.
+Add these environment secrets for a test organization with permission
+and quota to create and delete projects:
 
 | Secret | Required |
 | --- | --- |
