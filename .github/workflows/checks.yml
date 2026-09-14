@@ -35,7 +35,6 @@ jobs:
 
   e2e:
     name: End-to-end test
-    environment: e2e
     if: >-
       github.actor != 'dependabot[bot]' &&
       (github.event_name != 'pull_request' ||
