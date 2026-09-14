@@ -5,6 +5,8 @@ setup() {
 
   export INPUT_CLIENT_ID="${SLOCTL_CLIENT_ID:-}"
   export INPUT_CLIENT_SECRET="${SLOCTL_CLIENT_SECRET:-}"
+  export INPUT_OKTAORGURL="${SLOCTL_OKTA_ORG_URL:-}"
+  export INPUT_OKTAAUTHSERVER="${SLOCTL_OKTA_AUTH_SERVER:-}"
 
   printf -v test_project 'action-e2e-%(%Y%m%d%H%M%S)T-%s-%s' -1 "$RANDOM" "$RANDOM"
   sed "s/name: action-e2e/name: ${test_project}/" \
@@ -44,8 +46,9 @@ teardown() {
 }
 
 run_action() {
-  # Check action inputs without sloctl credential environment overrides.
+  # Check action inputs without sloctl authentication environment overrides.
   run env -u SLOCTL_CLIENT_ID -u SLOCTL_CLIENT_SECRET \
+    -u SLOCTL_OKTA_ORG_URL -u SLOCTL_OKTA_AUTH_SERVER \
     INPUT_SLOCTL_YML=project.yaml INPUT_OPERATION="$1" INPUT_DRY_RUN=false \
     /entrypoint.sh
 }

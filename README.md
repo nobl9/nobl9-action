@@ -13,6 +13,8 @@ The default operation is `apply`.
 | --- | --- | --- | --- |
 | `client_id` | The Client ID of your Nobl9 account | **Yes** | N/A |
 | `client_secret` | The Client Secret of your Nobl9 account | **Yes** | N/A |
+| `oktaOrgURL` | Okta organization URL for your Nobl9 account | No | sloctl default |
+| `oktaAuthServer` | Okta authorization server ID for your Nobl9 account | No | sloctl default |
 | `sloctl_yml` | The path or [glob pattern](https://pkg.go.dev/path/filepath#Match) to the configuration in YAML format, relative to the root directory of the repository. In order to supply multiple sources, separate them with comma (example below) | **Yes** | N/A |
 | `operation` | The operation to run: `apply` or `delete`. Other values are rejected. | No | `apply` |
 | `dry_run` | Submits the selected operation to the server without changing resources | No | `false` |
@@ -101,6 +103,21 @@ with:
 ```
 
 Delete also supports comma-separated paths, glob patterns, and `dry_run: "true"`.
+
+### Custom authentication
+
+For accounts that use a custom Okta organization or authorization server, set these inputs to match your `sloctl` configuration:
+
+```yaml
+with:
+  client_id: ${{ secrets.CLIENT_ID }}
+  client_secret: ${{ secrets.CLIENT_SECRET }}
+  sloctl_yml: "slos.yaml"
+  oktaOrgURL: ${{ vars.OKTA_ORG_URL }}
+  oktaAuthServer: ${{ vars.OKTA_AUTH_SERVER }}
+```
+
+Omit either input or leave it empty to use the corresponding sloctl default.
 
 ## Development
 

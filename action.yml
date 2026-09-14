@@ -10,6 +10,12 @@ inputs:
   client_secret:
     description: "Client Secret"
     required: true
+  oktaOrgURL:
+    description: "Okta organization URL; uses the sloctl default when omitted"
+    required: false
+  oktaAuthServer:
+    description: "Okta authorization server ID; uses the sloctl default when omitted"
+    required: false
   sloctl_yml:
     description: "The path or glob pattern to the configuration in YAML format"
     required: true
@@ -30,3 +36,5 @@ runs:
     - ${{ inputs.sloctl_yml }}
     - ${{ inputs.dry_run }}
     - ${{ inputs.operation }}
+    - ${{ inputs.oktaOrgURL }}
+    - ${{ inputs.oktaAuthServer }}

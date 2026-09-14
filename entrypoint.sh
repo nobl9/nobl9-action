@@ -20,6 +20,13 @@ defaultContext = "default"
     clientSecret = "${INPUT_CLIENT_SECRET}"
 EOF
 
+if [[ -n ${INPUT_OKTAORGURL:-} ]]; then
+  printf '    oktaOrgURL = "%s"\n' "$INPUT_OKTAORGURL" >>~/.config/nobl9/config.toml
+fi
+if [[ -n ${INPUT_OKTAAUTHSERVER:-} ]]; then
+  printf '    oktaAuthServer = "%s"\n' "$INPUT_OKTAAUTHSERVER" >>~/.config/nobl9/config.toml
+fi
+
 # Required to auto confirm, for more details refer to:
 # https://docs.nobl9.com/sloctl-user-guide?_highlight=prompt&_highlight=threshold#apply
 flags=(-y)
