@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v7
       - uses: nobl9/nobl9-action@latest
         with:
-          client_id: ${{ secrets.CLIENT_ID }}
+          client_id: ${{ vars.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
           sloctl_yml: "slos.yaml"
 ```
@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@v7
       - uses: nobl9/nobl9-action@latest
         with:
-          client_id: ${{ secrets.CLIENT_ID }}
+          client_id: ${{ vars.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
           sloctl_yml: "**"
 ```
@@ -70,7 +70,7 @@ jobs:
         uses: actions/checkout@v7
       - uses: nobl9/nobl9-action@latest
         with:
-          client_id: ${{ secrets.CLIENT_ID }}
+          client_id: ${{ vars.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
           sloctl_yml: "my slo1.yaml,my-slo2.yml,dir/my-slo3.json"
 ```
@@ -88,7 +88,7 @@ jobs:
         uses: actions/checkout@v7
       - uses: nobl9/nobl9-action@latest
         with:
-          client_id: ${{ secrets.CLIENT_ID }}
+          client_id: ${{ vars.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
           sloctl_yml: "validate-slos.yaml"
           dry_run: "true"
@@ -100,7 +100,7 @@ Set `operation: delete` in the action step to delete resources defined in the su
 
 ```yaml
 with:
-  client_id: ${{ secrets.CLIENT_ID }}
+  client_id: ${{ vars.CLIENT_ID }}
   client_secret: ${{ secrets.CLIENT_SECRET }}
   sloctl_yml: "slos.yaml"
   operation: "delete"
@@ -114,7 +114,7 @@ For accounts that use a custom Okta organization or authorization server, set th
 
 ```yaml
 with:
-  client_id: ${{ secrets.CLIENT_ID }}
+  client_id: ${{ vars.CLIENT_ID }}
   client_secret: ${{ secrets.CLIENT_SECRET }}
   sloctl_yml: "slos.yaml"
   oktaOrgURL: ${{ vars.OKTA_ORG_URL }}

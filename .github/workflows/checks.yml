@@ -52,7 +52,7 @@ jobs:
       - name: Apply and delete a project
         run: devbox run -- make test
         env:
-          SLOCTL_CLIENT_ID: ${{ secrets.SLOCTL_CLIENT_ID }}
+          SLOCTL_CLIENT_ID: ${{ vars.SLOCTL_CLIENT_ID }}
           SLOCTL_CLIENT_SECRET: ${{ secrets.SLOCTL_CLIENT_SECRET }}
-          SLOCTL_OKTA_ORG_URL: ${{ secrets.SLOCTL_OKTA_ORG_URL }}
-          SLOCTL_OKTA_AUTH_SERVER: ${{ secrets.SLOCTL_OKTA_AUTH_SERVER }}
+          SLOCTL_OKTA_ORG_URL: ${{ vars.SLOCTL_OKTA_ORG_URL }}
+          SLOCTL_OKTA_AUTH_SERVER: ${{ vars.SLOCTL_OKTA_AUTH_SERVER }}
