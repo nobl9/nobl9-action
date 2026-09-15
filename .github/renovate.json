@@ -3,7 +3,10 @@
   "extends": [
     "config:recommended",
     "schedule:nonOfficeHours",
-    ":enableVulnerabilityAlertsWithLabel(security)"
+    ":enableVulnerabilityAlertsWithLabel(security)",
+    ":automergeMinor",
+    ":automergePr",
+    ":automergeRequireAllStatusChecks"
   ],
   "pinDigests": false,
   "reviewersFromCodeOwners": true,
