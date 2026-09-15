@@ -67,3 +67,8 @@ to create and delete projects:
 
 Missing credentials fail the check through `sloctl`.
 Newer pushes do not cancel running checks, so the live test can finish cleanup.
+
+## Releases
+
+After publishing each release, update all action references in [README.md](../README.md) to the new release tag.
+Use an explicit version, such as `nobl9/nobl9-action@v0.3.0`.
