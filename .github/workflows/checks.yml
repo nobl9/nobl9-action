@@ -1,0 +1,58 @@
+name: Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  merge_group:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Lint and build (${{ matrix.runner }})
+    strategy:
+      fail-fast: false
+      matrix:
+        runner: [ubuntu-24.04, ubuntu-24.04-arm]
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jetify-com/devbox-install-action@v0.15.0
+        with:
+          devbox-version: 0.13.7
+          enable-cache: true
+      - run: devbox run -- make check
+
+  e2e:
+    name: End-to-end test
+    if: >-
+      github.actor != 'dependabot[bot]' &&
+      (github.event_name != 'pull_request' ||
+       github.event.pull_request.head.repo.full_name == github.repository)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          persist-credentials: false
+      - uses: jetify-com/devbox-install-action@v0.15.0
+        with:
+          devbox-version: 0.13.7
+          enable-cache: true
+      - name: Apply and delete a project
+        run: devbox run -- make test
+        env:
+          SLOCTL_CLIENT_ID: ${{ vars.SLOCTL_CLIENT_ID }}
+          SLOCTL_CLIENT_SECRET: ${{ secrets.SLOCTL_CLIENT_SECRET }}
+          SLOCTL_OKTA_ORG_URL: ${{ vars.SLOCTL_OKTA_ORG_URL }}
+          SLOCTL_OKTA_AUTH_SERVER: ${{ vars.SLOCTL_OKTA_AUTH_SERVER }}

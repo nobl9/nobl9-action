@@ -1,8 +1,17 @@
 #!/bin/bash
 
+operation="${INPUT_OPERATION:-apply}"
+case "$operation" in
+apply | delete) ;;
+*)
+  printf 'Invalid operation: %s. Expected apply or delete.\n' "$operation" >&2
+  exit 1
+  ;;
+esac
+
 mkdir -p ~/.config/nobl9
 
-cat << EOF > ~/.config/nobl9/config.toml
+cat <<EOF >~/.config/nobl9/config.toml
 defaultContext = "default"
 
 [Contexts]
@@ -11,14 +20,20 @@ defaultContext = "default"
     clientSecret = "${INPUT_CLIENT_SECRET}"
 EOF
 
+if [[ -n ${INPUT_OKTAORGURL:-} ]]; then
+  printf '    oktaOrgURL = "%s"\n' "$INPUT_OKTAORGURL" >>~/.config/nobl9/config.toml
+fi
+if [[ -n ${INPUT_OKTAAUTHSERVER:-} ]]; then
+  printf '    oktaAuthServer = "%s"\n' "$INPUT_OKTAAUTHSERVER" >>~/.config/nobl9/config.toml
+fi
+
 # Required to auto confirm, for more details refer to:
 # https://docs.nobl9.com/sloctl-user-guide?_highlight=prompt&_highlight=threshold#apply
 flags=(-y)
 
-# INPUT_SLOCTL_YML should be a comma separated values string to avoid issues
-# with file paths containing spaces.
-IFS=","
-for filepath in $INPUT_SLOCTL_YML; do
+# Split paths on commas and leave glob expansion to sloctl.
+IFS="," read -r -a filepaths <<<"$INPUT_SLOCTL_YML"
+for filepath in "${filepaths[@]}"; do
   flags+=(-f "$filepath")
 done
 
@@ -26,4 +41,4 @@ if [[ $INPUT_DRY_RUN == "true" ]]; then
   flags+=(--dry-run)
 fi
 
-sloctl apply "${flags[@]}"
+sloctl "$operation" "${flags[@]}"

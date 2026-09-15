@@ -1,0 +1,26 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "schedule:nonOfficeHours",
+    ":enableVulnerabilityAlertsWithLabel(security)"
+  ],
+  "pinDigests": false,
+  "reviewersFromCodeOwners": true,
+  "labels": ["dependencies", "renovate"],
+  "prHourlyLimit": 1,
+  "prConcurrentLimit": 5,
+  "rebaseWhen": "conflicted",
+  "branchPrefix": "renovate_",
+  "commitMessagePrefix": "chore:",
+  "packageRules": [
+    {
+      "matchManagers": ["github-actions"],
+      "addLabels": ["github-actions"]
+    },
+    {
+      "matchManagers": ["dockerfile"],
+      "addLabels": ["docker"]
+    }
+  ]
+}

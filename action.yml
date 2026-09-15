@@ -1,5 +1,5 @@
 name: "Nobl9 sloctl action"
-description: "Applies Nobl9 yaml configuration files using the sloctl CLI tool"
+description: "Applies or deletes Nobl9 resources from YAML configuration files using sloctl"
 branding:
   icon: 'target'
   color: 'blue'
@@ -10,11 +10,21 @@ inputs:
   client_secret:
     description: "Client Secret"
     required: true
+  oktaOrgURL:
+    description: "Okta organization URL; uses the sloctl default when omitted"
+    required: false
+  oktaAuthServer:
+    description: "Okta authorization server ID; uses the sloctl default when omitted"
+    required: false
   sloctl_yml:
     description: "The path or glob pattern to the configuration in YAML format"
     required: true
+  operation:
+    description: "The sloctl operation to run: apply or delete"
+    required: false
+    default: "apply"
   dry_run:
-    description: "Submits server-side request without persisting the configured resources"
+    description: "Submits the operation to the server without changing resources"
     required: false
     default: "false"
 runs:
@@ -25,3 +35,6 @@ runs:
     - ${{ inputs.client_secret }}
     - ${{ inputs.sloctl_yml }}
     - ${{ inputs.dry_run }}
+    - ${{ inputs.operation }}
+    - ${{ inputs.oktaOrgURL }}
+    - ${{ inputs.oktaAuthServer }}
