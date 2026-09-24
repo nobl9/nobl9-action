@@ -1,6 +1,6 @@
 FROM docker.io/nobl9/sloctl:0.26.0 AS sloctl
 
-FROM docker.io/library/alpine:3.24.1
+FROM docker.io/library/alpine:3.24.2
 
 RUN apk add --no-cache bash ca-certificates
 
