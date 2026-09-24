@@ -1,0 +1,58 @@
+name: Update sloctl and publish action
+run-name: sloctl action from release run ${{ inputs.source_run_id }}
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Official sloctl release tag
+        required: true
+        type: string
+      sha:
+        description: Commit SHA of the sloctl release
+        required: true
+        type: string
+      source_run_id:
+        description: Successful sloctl Release workflow run ID
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sloctl-action-release
+  queue: max
+  cancel-in-progress: false
+
+jobs:
+  release:
+    if: github.ref == 'refs/heads/main'
+    environment: sloctl-release-automation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v7.0.1
+        with:
+          ref: main
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Create GitHub App token
+        id: app-token
+        uses: actions/create-github-app-token@v3.2.0
+        with:
+          client-id: ${{ vars.SLOCTL_AUTOMATION_CLIENT_ID }}
+          private-key: ${{ secrets.SLOCTL_AUTOMATION_APP_PRIVATE_KEY }}
+          permission-actions: write
+          permission-checks: read
+          permission-contents: write
+          permission-pull-requests: write
+      - name: Update and publish action
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          APP_SLUG: ${{ steps.app-token.outputs.app-slug }}
+          SLOCTL_TAG: ${{ inputs.tag }}
+          SLOCTL_SHA: ${{ inputs.sha }}
+          SOURCE_RUN_ID: ${{ inputs.source_run_id }}
+        run: bash .github/scripts/update-sloctl.sh
