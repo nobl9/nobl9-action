@@ -1,4 +1,4 @@
-FROM docker.io/nobl9/sloctl:0.26.0 AS sloctl
+FROM docker.io/nobl9/sloctl:0.29.0 AS sloctl
 
 FROM docker.io/library/alpine:3.24.2
 
