@@ -3,7 +3,7 @@ FROM ${ACTION_IMAGE} AS action
 
 FROM docker.io/bats/bats:1.14.0
 
-RUN apk add --no-cache ca-certificates jq
+RUN apk add --no-cache ca-certificates coreutils git jq
 
 COPY --from=action /usr/local/bin/sloctl /usr/local/bin/sloctl
 COPY --from=action /entrypoint.sh /entrypoint.sh

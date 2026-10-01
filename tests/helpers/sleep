@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+# Retry delays are unnecessary when GitHub responses are local fixtures.
+exit 0

@@ -1,0 +1,6 @@
+paths:
+  .github/workflows/update-sloctl.yml:
+    ignore:
+      # actionlint 1.7.12 does not recognize GitHub's concurrency queue field.
+      # https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax#concurrency
+      - '^unexpected key "queue" for "concurrency" section\.'

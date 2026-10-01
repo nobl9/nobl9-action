@@ -18,6 +18,11 @@
   "commitMessagePrefix": "chore:",
   "packageRules": [
     {
+      "matchManagers": ["dockerfile"],
+      "matchPackageNames": ["docker.io/nobl9/sloctl", "nobl9/sloctl"],
+      "enabled": false
+    },
+    {
       "matchManagers": ["github-actions"],
       "addLabels": ["github-actions"]
     },
