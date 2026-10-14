@@ -5,7 +5,7 @@
     "gnumake@4.4.1",
     "actionlint@1.7.12",
     "shellcheck@0.11.0",
-    "shfmt@3.14.0",
+    "shfmt@3.14.1",
     "hadolint@2.14.0"
   ]
 }
