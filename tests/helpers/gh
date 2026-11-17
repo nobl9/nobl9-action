@@ -1,0 +1,162 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+method=GET
+query=""
+endpoint=""
+fields='{}'
+command="$1"
+shift
+if [[ "$command" != api ]]; then
+  operation="$1"
+  shift
+else
+  operation=""
+fi
+arguments=("$@")
+while (($#)); do
+  case "$1" in
+  --method)
+    method="$2"
+    shift 2
+    ;;
+  --jq)
+    query="$2"
+    shift 2
+    ;;
+  -f)
+    fields="$(jq --arg key "${2%%=*}" --arg value "${2#*=}" '. + {($key): $value}' <<<"$fields")"
+    shift 2
+    ;;
+  --paginate) shift ;;
+  *)
+    if [[ -z "$endpoint" && "$1" != --* ]]; then endpoint="$1"; fi
+    shift
+    ;;
+  esac
+done
+printf '%s\n' "$command $operation $method $endpoint" >>"$FAKE_STATE/calls"
+result='{}'
+case "$command $operation $method $endpoint" in
+"api  GET repos/nobl9/sloctl/actions/runs/"*)
+  result="$(jq -n --arg sha "$SLOCTL_SHA" --arg tag "$SLOCTL_TAG" --arg conclusion "${SOURCE_CONCLUSION:-success}" \
+    '{name:"Release",path:".github/workflows/release.yml",event:"push",status:"completed",
+      conclusion:$conclusion,head_branch:$tag,head_sha:$sha,head_repository:{full_name:"nobl9/sloctl"}}')"
+  ;;
+"api  GET repos/nobl9/sloctl/releases/tags/"*)
+  result="$(jq -n --arg tag "$SLOCTL_TAG" '{tag_name:$tag,draft:false,prerelease:false}')"
+  ;;
+"api  GET repos/nobl9/sloctl/commits/"*)
+  result="$(jq -n --arg sha "${SOURCE_TAG_SHA:-$SLOCTL_SHA}" '{sha:$sha}')"
+  ;;
+"api  GET repos/nobl9/nobl9-action/releases/latest")
+  [[ "${LATEST_READ_FAILURE:-false}" != true ]] || exit 1
+  result="$(jq 'last' "$FAKE_STATE/releases")"
+  ;;
+"api  GET users/"*)
+  result='{"id":12345}'
+  ;;
+"pr list GET "*)
+  result='[]'
+  if [[ -f "$FAKE_STATE/pr" && ! -f "$FAKE_STATE/merged" ]]; then result='[{"number":1}]'; fi
+  ;;
+"pr create GET "*)
+  for ((i = 0; i < ${#arguments[@]}; i++)); do
+    if [[ "${arguments[i]}" == --body-file ]]; then
+      cp "${arguments[i + 1]}" "$FAKE_STATE/pr-body.md"
+    fi
+  done
+  touch "$FAKE_STATE/pr"
+  rm -f "$FAKE_STATE/merged"
+  result='"https://github.com/nobl9/nobl9-action/pull/1"'
+  ;;
+"pr view GET 1")
+  state="${E2E_STATE:-SUCCESS}"
+  if [[ "${PR_PENDING:-false}" == true && ! -f "$FAKE_STATE/watched-pr" ]]; then state=PENDING; fi
+  result="$(jq -n --arg state "$state" '{statusCheckRollup:[
+      {name:"Lint and build (ubuntu-24.04)",conclusion:"SUCCESS"},
+      {name:"Lint and build (ubuntu-24.04-arm)",conclusion:"SUCCESS"},
+      {name:"End-to-end test",conclusion:$state}]}')"
+  ;;
+"pr checks GET 1")
+  [[ "${PR_CHECK_FAILURE:-false}" != true ]] || exit 1
+  touch "$FAKE_STATE/watched-pr"
+  ;;
+"api  PUT repos/nobl9/nobl9-action/pulls/1/merge")
+  [[ "${MERGE_FAILURE:-false}" != true ]] || exit 1
+  head_sha="$(jq -r .sha <<<"$fields")"
+  branch_sha="$(git --git-dir="$FAKE_REMOTE" rev-parse "refs/heads/sloctl-${SLOCTL_TAG}")"
+  [[ "$head_sha" == "$branch_sha" ]]
+  base_sha="$(git --git-dir="$FAKE_REMOTE" rev-parse refs/heads/main)"
+  tree="$(git --git-dir="$FAKE_REMOTE" rev-parse "${head_sha}^{tree}")"
+  merged_sha="$(printf 'Squash update\n' | git --git-dir="$FAKE_REMOTE" commit-tree "$tree" -p "$base_sha")"
+  git --git-dir="$FAKE_REMOTE" update-ref refs/heads/main "$merged_sha"
+  touch "$FAKE_STATE/merged"
+  result="$(jq -n --arg sha "$merged_sha" '{merged:true,sha:$sha}')"
+  ;;
+"run list GET "*)
+  checked_sha=""
+  for ((i = 0; i < ${#arguments[@]}; i++)); do
+    if [[ "${arguments[i]}" == --commit ]]; then checked_sha="${arguments[i + 1]}"; fi
+  done
+  expected_sha="$(git --git-dir="$FAKE_REMOTE" rev-parse refs/heads/main)"
+  action_tag="$(git --git-dir="$FAKE_REMOTE" show refs/heads/main:.github/sloctl-release.json | jq -r .action_tag)"
+  if git --git-dir="$FAKE_REMOTE" show-ref --verify --quiet "refs/tags/$action_tag"; then
+    tagged_state="$(git --git-dir="$FAKE_REMOTE" show "$action_tag:.github/sloctl-release.json" 2>/dev/null)" || tagged_state='{}'
+    if [[ "$(jq -r .sloctl_tag <<<"$tagged_state")" == "$SLOCTL_TAG" ]]; then
+      expected_sha="$(git --git-dir="$FAKE_REMOTE" rev-parse "$action_tag")"
+    fi
+  fi
+  [[ "$checked_sha" == "$expected_sha" ]] || {
+    echo "Checks queried for the wrong commit." >&2
+    exit 99
+  }
+  result='[{"databaseId":123}]'
+  ;;
+"run view GET 123")
+  result="$(jq -n --arg conclusion "${MAIN_CONCLUSION:-success}" '{
+      status:"completed",conclusion:$conclusion,jobs:[
+        {name:"Lint and build (ubuntu-24.04)",conclusion:"success"},
+        {name:"Lint and build (ubuntu-24.04-arm)",conclusion:"success"},
+        {name:"End-to-end test",conclusion:$conclusion}]}')"
+  ;;
+"run watch GET 123")
+  [[ "${MAIN_CONCLUSION:-success}" == success ]] || exit 1
+  ;;
+"run rerun GET 123") ;;
+"api  GET repos/nobl9/nobl9-action/git/matching-refs/tags/"*)
+  tag="${endpoint##*/}"
+  result='[]'
+  if git --git-dir="$FAKE_REMOTE" show-ref --verify --quiet "refs/tags/$tag"; then
+    result="$(jq -n --arg ref "refs/tags/$tag" '[{ref:$ref}]')"
+  fi
+  ;;
+"api  GET repos/nobl9/nobl9-action/commits/"*)
+  sha="$(git --git-dir="$FAKE_REMOTE" rev-parse "${endpoint##*/}^{commit}")"
+  result="$(jq -n --arg sha "$sha" '{sha:$sha}')"
+  ;;
+"api  POST repos/nobl9/nobl9-action/git/refs")
+  ref="$(jq -r .ref <<<"$fields")"
+  sha="$(jq -r .sha <<<"$fields")"
+  git --git-dir="$FAKE_REMOTE" update-ref "$ref" "$sha" 0000000000000000000000000000000000000000
+  ;;
+"api  GET repos/nobl9/nobl9-action/releases")
+  result="$(cat "$FAKE_STATE/releases")"
+  ;;
+"release create GET "*)
+  [[ "${RELEASE_FAILURE:-false}" != true ]] || exit 1
+  jq --arg tag "$endpoint" '. + [{tag_name:$tag,draft:false,prerelease:false}]' \
+    "$FAKE_STATE/releases" >"$FAKE_STATE/releases.next"
+  mv "$FAKE_STATE/releases.next" "$FAKE_STATE/releases"
+  ;;
+*)
+  echo "Unexpected GitHub command: $command $operation $method $endpoint" >&2
+  exit 99
+  ;;
+esac
+if [[ -n "$query" ]]; then
+  jq -r "$query" <<<"$result"
+else
+  printf '%s\n' "$result"
+fi
